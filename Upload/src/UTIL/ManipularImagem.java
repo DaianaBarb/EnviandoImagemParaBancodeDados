@@ -90,9 +90,10 @@ public class ManipularImagem {
 
         return novaImagem;
     }
-
+//transforma em um array de byte
     public static byte[] getImgBytes(BufferedImage image) {
         //output pq ele vai jogar em algum lugar a imagem
+        //saida
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         try {
             //vai escrever dentro do array a imaagem
@@ -100,8 +101,8 @@ public class ManipularImagem {
         } catch (IOException ex) {
             //handle it here.... not implemented yet...
         }
-        
-        InputStream is = new ByteArrayInputStream(baos.toByteArray());
+        //entrada
+        ByteArrayInputStream is = new ByteArrayInputStream(baos.toByteArray());
         //escreve a imagem entro do output e esta recuperando o output
         return baos.toByteArray();
     }

@@ -6,11 +6,16 @@
 package upload;
 
 import UTIL.ManipularImagem;
+import dao.ExemploDAO;
 import java.awt.image.BufferedImage;
 import java.io.File;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.ImageIcon;
 import javax.swing.JFileChooser;
 import javax.swing.JOptionPane;
+import javax.swing.filechooser.FileNameExtensionFilter;
+import modelo.Exemplo;
 
 /**
  *
@@ -50,6 +55,11 @@ BufferedImage imagem;
         btnEnviar.setBackground(new java.awt.Color(204, 0, 204));
         btnEnviar.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
         btnEnviar.setText("Enviar Fotografia");
+        btnEnviar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEnviarActionPerformed(evt);
+            }
+        });
 
         btnBuscar.setBackground(new java.awt.Color(204, 0, 204));
         btnBuscar.setFont(new java.awt.Font("Trebuchet MS", 0, 12)); // NOI18N
@@ -125,6 +135,9 @@ BufferedImage imagem;
     private void btnSelecionarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSelecionarActionPerformed
         // TODO add your handling code here:
         JFileChooser fc = new JFileChooser();
+        fc.setDialogTitle("Selecionar Imagem");
+        fc.setFileFilter(new FileNameExtensionFilter( "imagem","bmp","png","jpg","jpeg"));
+        fc.setAcceptAllFileFilterUsed(false);
         int res = fc.showOpenDialog(null);
 
         if (res == JFileChooser.APPROVE_OPTION) {
@@ -147,6 +160,28 @@ BufferedImage imagem;
     private void btnBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBuscarActionPerformed
       new Search().setVisible(true);
     }//GEN-LAST:event_btnBuscarActionPerformed
+
+    private void btnEnviarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEnviarActionPerformed
+  try {
+             Exemplo obj = new Exemplo();
+             obj.setImagem(ManipularImagem.getImgBytes(imagem));
+             ExemploDAO dao = new ExemploDAO();
+             Boolean foi = dao.inserir(obj);
+             if(foi)
+             {
+                 JOptionPane.showMessageDialog(rootPane, "Imagem enviada com sucesso");
+         
+             }
+             else
+             {
+                JOptionPane.showMessageDialog(rootPane, "Imagem não enviada");
+         
+             }
+             
+             } catch (Exception ex) {
+             Logger.getLogger(Send.class.getName()).log(Level.SEVERE, null, ex);
+         }
+    }//GEN-LAST:event_btnEnviarActionPerformed
 
     /**
      * @param args the command line arguments
